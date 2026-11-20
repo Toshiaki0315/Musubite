@@ -16,6 +16,7 @@ dist-ssr/
 src-tauri/target/
 src-tauri/WixTools/
 src-tauri/gen/schemas/
+src-tauri/binaries/
 
 # Python / Sidecar
 sidecar/.venv/

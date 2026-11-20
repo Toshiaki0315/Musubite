@@ -16,9 +16,11 @@ exclude them without re-parsing. A failure on one file is reported in its
 from __future__ import annotations
 
 import argparse
+import contextlib
 import csv
 import io
 import json
+import os
 import sys
 from collections.abc import Callable, Iterable, Sequence
 from dataclasses import asdict, dataclass, field
@@ -275,7 +277,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     )
     args = arg_parser.parse_args(argv)
 
-    documents = [asdict(parse_file(Path(f))) for f in args.files]
+    # stdout carries only the JSON result. Libraries sometimes print hints there
+    # (e.g. PyMuPDF's layout-package suggestion), so divert them to stderr.
+    os.environ.setdefault("PYMUPDF_SUGGEST_LAYOUT_ANALYZER", "0")
+    with contextlib.redirect_stdout(sys.stderr):
+        documents = [asdict(parse_file(Path(f))) for f in args.files]
     sys.stdout.write(json.dumps({"documents": documents}, ensure_ascii=False))
     sys.stdout.write("\n")
     return 0

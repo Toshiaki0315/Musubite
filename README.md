@@ -54,6 +54,24 @@ Rust 側は次の順でパーサーを探します。
 2. アプリ実行ファイルと同じディレクトリの `musubite-parser`（PyInstaller でビルドしたバイナリ）
 3. 開発時: `uv run --project sidecar python sidecar/parser.py`
 
+## アプリのビルド（配布用 `.app` / `.dmg`）
+```bash
+npm run build:app
+```
+1. `scripts/build-sidecar.sh` が PyInstaller でパーサーを単一バイナリ化し、`src-tauri/binaries/musubite-parser-<target-triple>` に出力します。
+2. `tauri build --config src-tauri/tauri.bundle.conf.json` がそのバイナリを `Musubite.app/Contents/MacOS/musubite-parser` として同梱します。
+
+成果物は `src-tauri/target/release/bundle/` に出力されます。
+
+注意事項:
+- PyInstaller はビルドを実行した Mac のアーキテクチャ向けにしかバイナリを作れません（Apple Silicon で作れば arm64 版）。Intel 版は Intel Mac（または x86_64 の Python）でビルドしてください。
+- 他の人に配布する場合は Apple Developer ID による署名と公証（notarization）が必要です。現状はアドホック署名のみです。
+- パーサー単体の動作確認:
+  ```bash
+  cd sidecar
+  MUSUBITE_PARSER_BIN=../src-tauri/binaries/musubite-parser-aarch64-apple-darwin uv run pytest tests/test_frozen_binary.py
+  ```
+
 ## macOS での自動ペースト権限について
 「自動ペースト（Auto-Paste）」機能を有効にする場合、macOS の **システム設定 > プライバシーとセキュリティ > アクセシビリティ** から、Musubite（開発時はターミナルまたはビルド済み `Musubite.app`）の制御を許可してください。
 権限を付与しない場合でも、クリップボードへのコピーと Claude Desktop の起動は動作するため、手動で `Cmd + V` を押すことで利用可能です。

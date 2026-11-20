@@ -25,3 +25,10 @@ thiserror = "2"
 
 [dev-dependencies]
 tempfile = "3"
+
+# Cargo strips release proc-macro dylibs by default; on recent macOS the stripped
+# dylibs can be rejected by dyld ("mis-aligned LINKEDIT string pool"), which makes
+# rustc report "can't find crate for `<proc_macro>`". Build-time artifacts never
+# ship, so leave them unstripped.
+[profile.release.build-override]
+strip = false

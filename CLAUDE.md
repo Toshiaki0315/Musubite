@@ -59,6 +59,7 @@ Musubite/
 - **Tauri full dev**: `npm run tauri dev`
 - **Frontend tests**: `npm test`
 - **Rust tests**: `cd src-tauri && cargo test`
+- **Release app build (bundles PyInstaller parser)**: `npm run build:app`
 - **Python sidecar setup & test**:
   ```bash
   cd sidecar

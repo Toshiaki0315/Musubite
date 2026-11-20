@@ -213,3 +213,23 @@ class TestHelpers:
         assert _is_low_text("システム構成図")
         assert not _is_low_text("導入背景 現状の課題 手作業による集計")
         assert _is_low_text("Figure 1")
+
+
+class TestStdoutIsolation:
+    def test_library_output_does_not_corrupt_json(
+        self,
+        sample_md: Path,
+        monkeypatch: pytest.MonkeyPatch,
+        capsys: pytest.CaptureFixture[str],
+    ) -> None:
+        original = musubite_parser.PARSERS["md"]
+
+        def noisy(path: Path) -> ParsedDocument:
+            print("Consider using some optional package")  # e.g. PyMuPDF's hint
+            return original(path)
+
+        monkeypatch.setitem(musubite_parser.PARSERS, "md", noisy)
+        assert main([str(sample_md)]) == 0
+        captured = capsys.readouterr()
+        assert json.loads(captured.out)["documents"][0]["name"] == "memo.md"
+        assert "Consider using" in captured.err
