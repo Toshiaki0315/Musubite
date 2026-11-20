@@ -1,0 +1,26 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN',
+    'Noto Sans JP', sans-serif;
+  --color-accent: #b5483b;
+  --color-accent-soft: #f6e7e4;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-stone-50 text-stone-800 antialiased dark:bg-stone-900 dark:text-stone-100;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+textarea,
+input {
+  -webkit-user-select: text;
+  user-select: text;
+}

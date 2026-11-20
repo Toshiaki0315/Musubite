@@ -1,0 +1,48 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+*.dmg
+*.app
+
+# Node / Frontend
+node_modules/
+dist/
+dist-ssr/
+*.local
+.vite/
+
+# Rust / Tauri
+src-tauri/target/
+src-tauri/WixTools/
+src-tauri/gen/schemas/
+
+# Python / Sidecar
+sidecar/.venv/
+sidecar/__pycache__/
+sidecar/.pytest_cache/
+sidecar/.mypy_cache/
+sidecar/.ruff_cache/
+sidecar/build/
+sidecar/dist/
+*.pyc
+*.pyo
+*.spec
+
+# Test coverage reports
+coverage/
+.coverage
+.coverage.*
+htmlcov/
+
+# IDE / Editors
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+
+# Environment variables
+.env
+.env.*
+!.env.example
